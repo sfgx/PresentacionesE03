@@ -1,0 +1,745 @@
+%\documentclass[10pt, xcolor=svgnames,trans]{beamer} % Para imprimir handouts
+\documentclass[10pt,aspectratio=169]{beamer}  % Para imprimir presentación
+
+
+% Color definitions, new environments and comands, packages
+\input{files/configuration.tex}
+\usepackage{mathspec}
+
+% Beamer Theme and Options
+\usetheme[progressbar=foot,block=fill]{metropolis}
+\setbeamercolor{progress bar}{fg=hi_blue, bg=hi_blue}
+
+
+\usefonttheme{professionalfonts}
+\setsansfont[BoldFont={Fira Sans}, Numbers={OldStyle}]{Fira Sans Light}
+\setmathsfont(Digits)[Numbers={Lining, Proportional}]{Fira Sans Light}
+
+
+% 
+\title{Matemática III / Microeconomía I}
+\subtitle{Elementos Básicos de Optimización}
+\date{Versión 0.7: \today}
+\author{Santiago Foguet}
+\institute{\textbf{Instituto de Investigaciones Económicas} \\ Facultad de Ciencias Económicas \\ Universidad Nacional de Tucumán}
+%\titlegraphic{\hfill\includegraphics[height=.75cm]{images/logo_mod.jpg}}
+
+
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Tabla de Contenido}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+
+%%
+% 
+%%
+\setbeamercolor{progress bar}{fg=rb_red, bg=rb_red}
+\section{Formas Cuadráticas y Matrices definidas}
+\setbeamercolor{frametitle}{bg=rb_red}
+
+%
+\begin{frame}{Formas cuadráticas}
+
+  Una forma cuadrática en $\mathbb{R}^n$ es una función real de la forma:
+%
+  \begin{equation*}
+	Q(x_1, \ldots, x_n) = \sum_{i \leq j} a_{ij} x_i x_j
+  \end{equation*}
+%
+  donde cada término de la función es un monomio de grado $2$ de la forma $a_{ij} x_i x_j$
+
+\begin{alertblock}{Importante}
+	Toda forma cuadrática puede representarse en forma matricial usando una matriz simétrica $A$ de tal manera que:
+%
+	\begin{equation*}
+		Q(\mathbf{x})=\mathbf{x}^T A \,\mathbf{x}
+	\end{equation*}
+%
+	donde $\mathbf{x}^T = (x_1, x_2, \ldots , x_n)$ es un vector fila y los elementos de la matriz $A$ son los coeficientes
+	$a_{ij}$ de la forma cuadrática. Cada forma cuadrática está asociada a una \alertred{única} matriz simétrica.	
+\end{alertblock}
+
+\end{frame}
+
+%
+\begin{frame}{Formas cuadráticas}
+\begin{exampleblock}{Ejemplo}
+La forma cuadrática de dimensión $3$:
+%
+\begin{equation*}
+	Q(x_1, x_2, x_3) = a_{11} x_1^2 + a_{22} x_2^2 + a_{33} x_3^2 + a_{12} x_1 x_2 +  a_{13} x_1 x_3 + a_{23} x_2 x_3
+\end{equation*}
+%
+puede ser representada en forma matricial como:
+%
+\begin{equation*}
+	Q(x_1, x_2, x_3) = \begin{pmatrix}
+		x_1 & x_2 & x_3
+	\end{pmatrix} \begin{pmatrix}
+		a_{11} & \frac{1}{2} a_{12} & \frac{1}{2} a_{13} \\
+		\frac{1}{2} a_{12} & a_{22} & \frac{1}{2} a_{23} \\
+		\frac{1}{2} a_{13} & \frac{1}{2} a_{23} & a_{33}
+	\end{pmatrix}\begin{pmatrix}
+		x_1 \\ x_2 \\ x_3
+	\end{pmatrix}
+\end{equation*}
+%
+Para escribir la matriz los coeficientes correspondientes a los monomios con dos variables distintas
+se multiplican por $1/2$ para poder obtener la matriz simétrica.
+
+\end{exampleblock}
+\end{frame}
+
+
+%
+\begin{frame}{Formas cuadráticas y matrices definidas}
+Una forma cuadrática y su matriz simétrica asociada $(A)$ de orden $n \times n$ serán:
+%
+\begin{enumerate}[label=(\alph*)]
+	\item \textbf{definidas positivas} si $\mathbf{x}^T A \,\mathbf{x} > 0$ para todo $\mathbf{x} \neq \mathbf{0}$ en $\mathbb{R}^n$.
+	\item \textbf{semidefinidas positivas}  si $\mathbf{x}^T A \,\mathbf{x} \geq 0$ para todo $\mathbf{x} \neq \mathbf{0}$ en $\mathbb{R}^n$.
+	\item \textbf{definidas negativas} si $\mathbf{x}^T A \,\mathbf{x} < 0$ para todo $\mathbf{x} \neq \mathbf{0}$ en $\mathbb{R}^n$.
+	\item \textbf{semidefinidas negativas}  si $\mathbf{x}^T A \,\mathbf{x} \leq 0$ para todo $\mathbf{x} \neq \mathbf{0}$ en $\mathbb{R}^n$.
+	\item \textbf{indefinidas} si $\mathbf{x}^T A \,\mathbf{x} > 0$ para algún $\mathbf{x}$  en $\mathbb{R}^n$ y 
+	$\mathbf{x}^T A \,\mathbf{x} < 0$ para algún otro $\mathbf{x}$  en $\mathbb{R}^n$.
+\end{enumerate}
+%
+
+\end{frame}
+
+%
+\begin{frame}{Menores principales de una matriz}
+
+\begin{varblock}{Definición}{fg = hi_blue}
+	Sea $A$ una matriz simétrica de orden $n \times n$. La submatriz de orden $k \times k$ obtenida a partir de $A$ al eliminar $n-k$ columnas
+	y las mismas $n-k$ filas de $A$ se llama \alertblue{submatriz principal de orden $k$} de la matriz $A$.	
+	El determinante de la submatriz principal se llama \alertblue{menor principal de orden $k$ de la matriz $A$} y se los
+	representa con el simbolo $\Delta_k$ con $k = 1, 2, \dots, n$.
+\end{varblock}
+
+Una matriz de orden $3 \times 3$ tiene los siguientes menores principales:
+
+\begin{itemize}
+	\item de orden $k = 1$: $| a_{11}|$; $| a_{22}|$; $| a_{33}|$ que corresponden a los elementos de la 
+	diagonal principal de la matriz
+	\item de orden $k = 2$:  $\left| \begin{array}{cc}
+		a_{11} & a_{12} \\
+		a_{21} & a_{22}
+	\end{array}\right|$; $\left| \begin{array}{cc}
+		a_{11} & a_{13} \\
+		a_{31} & a_{33}
+	\end{array}\right|$; $\left| \begin{array}{cc}
+		a_{22} & a_{23} \\
+		a_{32} & a_{33}
+	\end{array}\right|$
+	\item de orden $k = 3$: coincide con el determinante de la matriz $|A|$ 
+\end{itemize}
+
+\end{frame}
+
+%
+\begin{frame}{Menores principales directores}
+	\begin{varblock}{Definición}{fg = hi_blue}
+		Sea $A$ una matriz simétrica de orden $n \times n$. La submatriz principal de orden $k$ que se obtiene al 
+		eliminar las últimas $n - k$ filas y columnas de $A$ se llama \alertblue{submatriz principal directora de orden $k$} 
+		de la matriz $A$. 
+		
+		El determinante asociado a la submatriz principal directora de orden $k$ se llama \alertblue{menor principal director
+		de orden $k$ de la matriz $A$}.
+	\end{varblock}
+
+	Los menores principales directores se representaran indistitamente con los símbolos $D_k$ o $|A_k|$ con $k = 1, 2, \dots, n$
+
+	Una matriz de orden $n \times n$ tiene exactamente $n$ menores principales directores.
+\end{frame}
+
+%
+\begin{frame}{Condiciones para matrices definidas positivas, negativas e indefinidas}
+	\begin{varblock}{Teorema}{fg = vi_magenta}
+		Sea $A$ una matriz simétrica de orden $n \times n$. Entonces:
+		%
+		\begin{enumerate}[label=(\alph*)]
+			\item $A$ es definida positiva si y solo si todos los menores principales directores son positivos. Es decir, 
+			$D_k > 0$ para todo $k = 1, \ldots, n$.
+			\item $A$ es definida negativa si y solo si los menores principales directores alternan de signo. 
+			$(-1)^k D_k > 0$ para $k = 1, \ldots, n$. Los menores principales directores con número impar de filas y
+			 columnas deberán ser negativos y los pares tener signo positivo.
+			\item Si algún menor principal director $D_k$ (o algún conjunto de ellos) es no nulo pero no se ajustan a ninguno
+			de los patrones de signos anteriores entonces la matriz $A$ será indefinida. 
+		\end{enumerate}
+	\end{varblock}
+\end{frame}
+
+%
+\begin{frame}{Condiciones para matrices semidefinidas positivas y negativas}
+	\begin{varblock}{Teorema}{fg = vi_magenta}
+		Sea $A$ una matriz simétrica de orden $n \times n$. Entonces:
+		%
+		\begin{enumerate}[label=(\alph*)]
+			\item $A$ es semidefinida positiva si y solo si $\Delta_k \geq 0$ para todo menor principal de orden $k = 1, \ldots, n$.
+			\item $A$ es semidefinida negativa si y solo si $(-1)^k \Delta_k \geq 0$ para todo menor principal de orden $k = 1, \ldots, n$. 
+		\end{enumerate}
+	\end{varblock}
+\end{frame}
+
+
+
+%%
+% 
+%%
+\setbeamercolor{progress bar}{fg=rb_orange, bg=rb_orange}
+\section{Funciones Reales de $n$ variables}
+\setbeamercolor{frametitle}{bg=rb_orange}
+
+\begin{frame}{Función Real}
+	
+	\begin{varblock}{Definición}{fg = hi_blue}
+	  $f: D \rightarrow R$ es una función real si $D$ es cualquier conjunto y $R \subset \mathbb{R}$.
+	\end{varblock}
+	\vspace{10pt}
+	Cuando el dominio de la función sea un subjunto de $\mathbb{R}^{n}$ respresentaremos a la función como:
+	
+	\[f(\mathbf{x}) = f(x_1, x_2, \dots, x_n)\]
+
+	En el caso que necesitemos indicar un punto particular del dominio de $f$ los representaremos como $\mathbf{x}^0$
+\end{frame}
+
+\begin{frame}{Funciones crecientes y decrecientes}
+	\begin{varblock}{Funciones crecientes, estrictamente crecientes y fuertemente crecientes}{fg = hi_blue}
+		Sea $f: D \rightarrow \mathbb{R}$, donde $D$ es un subconjunto de $\mathbb{R}^n$. Entonces:
+	
+		\begin{enumerate}[label=(\alph*)]
+			\item $f$ será creciente si $f(\mathbf{x}^0) \geq f(\mathbf{x}^1)$ cuando $\mathbf{x}^0 \geq \mathbf{x}^1$.
+			\item $f$ será estrictamente creciente si $f(\mathbf{x}^0) > f(\mathbf{x}^1)$ cuando $\mathbf{x}^0 \gg \mathbf{x}^1$.
+			\item $f$ será fuertemente creciente si $f(\mathbf{x}^0) > f(\mathbf{x}^1)$ cuando $\mathbf{x}^0 \geq \mathbf{x}^1$.
+		\end{enumerate}
+	  
+	\end{varblock}
+
+	\begin{varblock}{Funciones decrecientes, estrictamente decrecientes y fuertemente decrecientes}{fg = hi_blue}
+		Sea $f: D \rightarrow \mathbb{R}$, donde $D$ es un subconjunto de $\mathbb{R}^n$. Entonces:
+	
+		\begin{enumerate}[label=(\alph*)]
+			\item $f$ será decreciente si $f(\mathbf{x}^0) \leq f(\mathbf{x}^1)$ cuando $\mathbf{x}^0 \geq \mathbf{x}^1$.
+			\item $f$ será estrictamente creciente si $f(\mathbf{x}^0) < f(\mathbf{x}^1)$ cuando $\mathbf{x}^0 \gg \mathbf{x}^1$.
+			\item $f$ será fuertemente creciente si $f(\mathbf{x}^0) < f(\mathbf{x}^1)$ cuando $\mathbf{x}^0 \geq \mathbf{x}^1$.
+		\end{enumerate}
+	  
+	\end{varblock}
+	
+
+\end{frame}
+
+
+\begin{frame}{Conjuntos de Nivel de una Función Real}
+	\begin{varblock}{Definición}{fg = hi_blue}
+		$L(y^0)$ es un \textbf{conjunto de nivel} de la función real $f: D \rightarrow \mathbb{R}$ si y solo si
+		
+		\begin{equation*}
+			 L(y^0) = \left\{ \mathbf{x} \mid \mathbf{x} \in D, f(\mathbf{x}) = y^0 \right\}
+		\end{equation*}
+		
+		donde $y^0 \in \mathbb{R}$.
+	\end{varblock}
+	
+	Como se puede construir un conjunto para cada valor del rango de la función	se puede representar 
+	completamente la misma a través de estos conjuntos.
+	
+	En el caso de funciones de dos variables independientes la representación gráfica de esto conjuntos se denomina 
+	\textbf{curvas de nivel}.
+
+	En el caso de funciones de tres variables independientes la representación gráfica de esto conjuntos se denomina 
+	\textbf{superficies de nivel}.
+\end{frame}
+
+
+\begin{frame}{Otras definiciones}
+	\begin{varblock}{Conjunto de nivel relativo a un punto}{fg = hi_blue}
+		$\mathcal{L}(\mathbf{x}^0)$ es un \textbf{conjunto de nivel} de la función real $f: D \rightarrow \mathbb{R}$ relativo 
+		a un punto $\mathbf{x}^0 $ si y solo si
+		\vspace{-3pt}
+		\begin{equation*}
+			 \mathcal{L}(\mathbf{x}^0) = \left\{ \mathbf{x} \mid \mathbf{x} \in D, f(\mathbf{x}) = f(\mathbf{x}^0) \right\}
+		\end{equation*}
+
+	\end{varblock}
+
+	\begin{varblock}{Conjuntos superiores e inferiores}{fg = hi_blue}
+		\begin{enumerate}[label=(\alph*)]
+			\item $S(y^0) \equiv \left\{ \mathbf{x} \mid \mathbf{x} \in D, f(\mathbf{x}) \geq y^0 \right\}$ se llama
+			conjunto superior para la curva de nivel $y^0$.
+			\item $I(y^0) \equiv \left\{ \mathbf{x} \mid \mathbf{x} \in D, f(\mathbf{x}) \leq y^0 \right\}$ se llama
+			conjunto inferior para la curva de nivel $y^0$.
+			\item $S'(y^0) \equiv \left\{ \mathbf{x} \mid \mathbf{x} \in D, f(\mathbf{x}) > y^0 \right\}$ se llama
+			conjunto estrictamente superior para la curva de nivel $y^0$.
+			\item $I'(y^0) \equiv \left\{ \mathbf{x} \mid \mathbf{x} \in D, f(\mathbf{x}) < y^0 \right\}$ se llama
+			conjunto estrictamente inferior para la curva de nivel $y^0$.
+		\end{enumerate}
+	
+	\end{varblock}
+
+\end{frame}
+
+
+\begin{frame}{Funciones Reales sobre Conjuntos Convexos}
+
+	\begin{alertblock}{Supuesto sobre el dominio de una función}
+		Para la función real $f: D \rightarrow \mathbb{R}$ vamos a suponer que su dominio es $D \subset \mathbb{R}^n$
+		es un conjunto convexo.	
+	\end{alertblock}
+	
+	\begin{varblock}{Combinación Convexa}{fg = hi_blue}
+		Sean $\mathbf{x}^1$ y $\mathbf{x}^2$ dos elementos del conjunto convexo $D \supset \mathbb{R}^n$, el elemento definido por 
+
+		\[\mathbf{x}^t = t \mathbf{x}^1 + (1-t) \mathbf{x}^2\]
+	
+		 con $t \in [0, 1]$ se llamará \textbf{combinación convexa}  y $\mathbf{x}^t \in D$.   
+	\end{varblock}
+
+\end{frame}
+
+
+%%
+% 
+%%
+\setbeamercolor{progress bar}{fg=rb_yellow, bg=rb_yellow}
+\section{Funciones Cóncavas y Convexas}
+\setbeamercolor{frametitle}{bg=rb_yellow, fg=black}
+
+\begin{frame}{Función cóncava y estrictamente cóncava}
+
+	\begin{varblock}{Función Cóncava}{fg = hi_blue}
+		$f: D \rightarrow \mathbb{R}$ es una funcón cóncava si para todo $\mathbf{x}^1, \mathbf{x}^2 \in D$,
+		
+		\[ f(\mathbf{x}^t) \geq t f(\mathbf{x}^1) + (1 - t) f(\mathbf{x}^2)   \quad   \forall \, t \in [0,1] \]
+	\end{varblock}
+
+	\begin{varblock}{Función Estrictamente Cóncava}{fg = hi_blue}
+		$f: D \rightarrow \mathbb{R}$ es una funcón estrictamente cóncava si para todo $\mathbf{x}^1 \neq  \mathbf{x}^2 \in D$,
+		
+		\[ f(\mathbf{x}^t) > t f(\mathbf{x}^1) + (1 - t) f(\mathbf{x}^2)   \quad   \forall \, t \in (0,1) \]
+	\end{varblock}
+
+\end{frame}
+
+\begin{frame}{Función convexa y estrictamente convexa}
+
+	\begin{varblock}{Función Convexa}{fg = hi_blue}
+		$f: D \rightarrow \mathbb{R}$ es una funcón cóncava si para todo $\mathbf{x}^1, \mathbf{x}^2 \in D$,
+		
+		\[ f(\mathbf{x}^t) \leq t f(\mathbf{x}^1) + (1 - t) f(\mathbf{x}^2)   \quad   \forall \, t \in [0,1] \]
+	\end{varblock}
+
+	\begin{varblock}{Función Estrictamente Convexa}{fg = hi_blue}
+		$f: D \rightarrow \mathbb{R}$ es una funcón estrictamente convexa si para todo $\mathbf{x}^1 \neq  \mathbf{x}^2 \in D$,
+		
+		\[ f(\mathbf{x}^t) < t f(\mathbf{x}^1) + (1 - t) f(\mathbf{x}^2)   \quad   \forall \, t \in (0,1) \]
+	\end{varblock}
+
+\end{frame}
+
+
+\begin{frame}{Representación gráfica de funciones cóncavas y convexas}
+	\begin{varblock}{Puntos sobre o debajo de funciones cóncavas}{fg = vi_magenta}
+		Sea $A \equiv \left\{ (\mathbf{x}, y) \mid \mathbf{x} \in D, f(\mathbf{x}) \geq y\right\}$ el conjunto de puntos
+		``sobre o debajo'' de la gráfica de $f: D \rightarrow \mathbb{R}$, donde $D \subset \mathbb{R}^n$ es un conjunto
+		convexo. Entonces
+		
+		\[ f \, \text{es una función cóncava}  \Longleftrightarrow  A \, \text{es un conjunto convexo}\]
+		
+	\end{varblock}
+
+	\begin{varblock}{Puntos sobre o arriba de funciones convexas}{fg = vi_magenta}
+		Sea $A^* \equiv \left\{ (\mathbf{x}, y) \mid \mathbf{x} \in D, f(\mathbf{x}) \leq y\right\}$ el conjunto de puntos
+		``sobre o por arriba'' de la gráfica de $f: D \rightarrow \mathbb{R}$, donde $D \subset \mathbb{R}^n$ es un conjunto
+		convexo. Entonces
+		
+		\[ f \, \text{es una función convexa}  \Longleftrightarrow  A^* \, \text{es un conjunto convexo}\]
+		
+	\end{varblock}
+\end{frame}
+
+\begin{frame}{Relación entre funciones cóncavas y convexas}
+	\begin{varblock}{Teorema}{fg = vi_magenta}
+	  $f(\mathbf{x})$ es una función (estrictamente) cóncava si y solo si $-f(\mathbf{x})$ es una función
+	  (estrictamente) convexa. 
+	\end{varblock}
+
+	\begin{exampleblock}{Demostración}
+		Si $f(\mathbf{x})$ es cóncava entonces
+		
+		por definición: $f(\mathbf{x}^t) \geq t f(\mathbf{x}^1) + (1 - t) f(\mathbf{x}^2)$
+
+		ahora si multiplicamos por $-1$ obtenemos $-f(\mathbf{x}^t) \leq t (-f(\mathbf{x}^1)) + (1 - t) (-f(\mathbf{x}^2))$
+
+		por lo tanto por definición: $-f(\mathbf{x})$ es convexa.
+
+	\end{exampleblock}
+\end{frame}
+
+\begin{frame}{¿Cómo determinar la concavidad/convexidad de una función}
+	Por lo general, aplicar la definición de concavidad o convexidad resulta poco práctico a la hora de determinar
+	si una función es cóncava o convexa. Para lograr esto utilizaremos distintos criterios. Para ello recordemos el
+	caso sencillo de una función de una variable. Si el $d^2f < 0$ la función era cóncava y si $d^2f > 0$ la función
+	era convexa. Este mismo criterio se utilizará para funciones de 2 o más variables reconociendo que el diferencial
+	segundo de una función de $n$ variables es una forma cuadrática cuya matriz asociada en la matriz hessiana donde
+	los elementos de esta matriz son las derivadas segundas de la función.  
+\end{frame}
+
+\begin{frame}{Diferencial de segundo orden de una función}
+	
+Sea $f(\mathbf{x})$ una función de clase $C^2$ (con derivadas de segundo orden continuas) definida en un conjunto 
+abierto $S$ de  $\mathbb{R}^n$ el diferencial de segundo orden de la función $f$ esta definido por:
+
+	\[ 
+		d^2f(\mathbf{x}) = d\mathbf{x}^T \, Hf(\mathbf{x})\, d\mathbf{x}     
+	\]
+
+donde los elementos de $d\mathbf{x}^T$ no todos simultaneamente nulos y $Hf(\mathbf{x})$ es la matriz hessiana simétrica
+
+	\[ 
+		Hf(\mathbf{x}) = \begin{bmatrix}
+			f_{11} & f_{12} & f_{13} & \cdots & f_{1n} \\
+			f_{21} & f_{22} & f_{23} & \cdots & f_{2n} \\
+			f_{31} & f_{32} & f_{33} & \cdots & f_{3n} \\
+			\vdots & \vdots & \vdots & \ddots & \vdots \\
+			f_{n1} & f_{n2} & f_{n3} & \cdots & f_{nn}
+		\end{bmatrix}, \quad \text{con} \quad f_{ij} = \frac{\partial f(\mathbf{x})}{\partial x_i \partial x_j} 
+		\quad \text{y} \quad f_{ij} = f_{ji}
+	\]
+
+\end{frame}
+
+\begin{frame}{Condiciones para la Concavidad y Convexidad}
+
+	\begin{varblock}{Teorema}{fg = vi_magenta}
+		Sea $f(\mathbf{x}) = f(x_1, x_2, \dots, x_n)$ una función de clase $C^2$ definida en un conjunto abierto
+		y convexo $S$ de  $\mathbb{R}^n$ entonces:
+
+		\begin{enumerate}[label=(\alph*)]
+			\item $d^2f$ es semidefinida negativa es $S$  $\Longleftrightarrow$  $f(\mathbf{x})$ es cóncava es $S$.
+			\item $d^2f$ es semidefinida positiva es $S$  $\Longleftrightarrow$  $f(\mathbf{x})$ es convexa es $S$.
+			\item $d^2f$ es definida negativa es $S$  $\Longrightarrow$  $f(\mathbf{x})$ es estrictamente cóncava es $S$.
+			\item $d^2f$ es definida positiva es $S$  $\Longrightarrow$  $f(\mathbf{x})$ es estrictamente convexa es $S$.
+		\end{enumerate}
+
+	\end{varblock}
+
+\end{frame}
+
+\begin{frame}{Condiciones para la Concavidad y Convexidad}
+
+	\begin{varblock}{Teorema}{fg = vi_magenta}
+		Sea $f(\mathbf{x}) = f(x_1, x_2, \dots, x_n)$ una función de clase $C^2$ definida en un conjunto abierto
+		y convexo $S$ de  $\mathbb{R}^n$. Sean $D_r(\mathbf{x})$ y $\Delta_r(\mathbf{x})$ los menores principales 
+		directores y los menores principales de orden $r$, con $ r = 1,2, \dots, n$ de la matriz hessiana entonces:
+
+		\begin{enumerate}[label=(\alph*)]
+			\item $f(\mathbf{x})$ es cóncava es $S$  $\Longleftrightarrow$  $(-1)^r \Delta_r(\mathbf{x}) \geq 0 \, \forall \mathbf{x}$
+			y para todo $\Delta_r(\mathbf{x}), \quad  r = 1,2, \dots, n$.
+
+			\item $f(\mathbf{x})$ es convexa es $S$  $\Longleftrightarrow$  $\Delta_r(\mathbf{x}) \geq 0 \, \forall \mathbf{x}$
+			y para todo $\Delta_r(\mathbf{x}), \quad  r = 1,2, \dots, n$.
+			
+			\item Si $(-1)^r D_r(\mathbf{x}) > 0 \, \forall \mathbf{x} \, \text{y} \, r = 1,2, \dots, n$  $\Longrightarrow$ 
+			 $f(\mathbf{x})$ es estrictamente cóncava es $S$.
+			
+			\item Si $D_r(\mathbf{x}) > 0 \, \forall \mathbf{x} \, \text{y} \, r = 1,2, \dots, n$  $\Longrightarrow$ 
+			 $f(\mathbf{x})$ es estrictamente convexa es $S$.
+		\end{enumerate}
+
+	\end{varblock}
+
+\end{frame}
+
+
+%%
+% 
+%%
+\setbeamercolor{progress bar}{fg=rb_green, bg=rb_green}
+\section{Optimización sin restricciones}
+\setbeamercolor{frametitle}{fg = white, bg=rb_green}
+
+
+\begin{frame}{Planteo del Problema de Optimización no Restringido}
+	
+	\[
+		\underset{\vxe}{\mathrm{Maximizar}} \quad  f(\vx; \valph) = f(\vxe; \valphe)
+	\]
+	o
+	\[
+		\underset{\vxe}{\mathrm{Minimizar}} \quad  f(\vx; \valph) = f(\vxe; \valphe)
+	\]
+	
+	donde $\valph = (\valphe) \in \mathbb{R}^m$.
+	\vspace{5pt}
+	\begin{enumerate}
+		\item La función $f$ se llama \alertblue{función objetivo} del modelo.
+		\item Las variables $\vxe$ se denominan \alertblue{variables de decisión} del modelo.
+		\item Las variables $\alpha_1, \alpha_2, \dots, \alpha_m$ se denominan \alertred{parámetros} del modelo.
+	\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Condiciones de Primer Orden (CPO)}
+	
+	\textit{Condición necesaria}. Sea $f: S \rightarrow \R$ una función $C^1$ (con primeras derivadas parciales contínuas) definida en $S \in \Rn$.
+	Si $\vx^*(\valph)$ es un máximo o mínimo local de $f$ en $S$ y si $\vx^*(\valph)$ es un punto interior
+	de $S$, entonces:
+
+	\begin{myequation}
+		\frac{\partial f}{\partial x_i}(\vx^*)= 0 \quad \text{for } i = 1, 2, \dots, n
+	\end{myequation}
+
+
+\end{frame}
+
+\begin{frame}{Condiciones de Segundo Orden (CSO)}
+	
+	\textit{Condición suficiente}. Sea $f: S \rightarrow \R$ una función $C^2$ (con segundas derivadas parciales contínuas)
+	definida en $S \in \Rn$. Suponga que $\vx^*(\valph)$ es un punto crítico de $f$ que satisface las CPO.
+	
+	\begin{enumerate}
+		\item Si la matriz hessiana $Hf(\vx^*)$ es negativa definida entonces $\vx^*(\valph)$ es un máximo
+		local de $f$. 
+		\item Si la matriz hessiana $Hf(\vx^*)$ es positiva definida entonces $\vx^*(\valph)$ es un máximo
+		local de $f$.
+		\item Si la matriz hessiana $Hf(\vx^*)$ es indefinida entonces $\vx^*(\valph)$ no es ni un máximo ni
+		un mínimo local de $f$. 
+	\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{Máximos de una Función}
+	
+	Sea $f: S \rightarrow \R$ una función $C^2$ definida en $S \in \Rn$. Suponga que 
+
+	\[
+		\frac{\partial f}{\partial x_i}(\vx^*)= 0 \quad \text{for } i = 1, 2, \dots, n
+	\]
+
+	y que los $n$ menores principales directores de la matriz hessiana ($Hf(\vx^*)$) alternan de signo
+
+	$\left| f_{11} \right| < 0$, \quad $\left| \begin{array}{cc}
+		f_{11} & f_{12} \\
+		f_{21} & f_{22}
+	\end{array}\right| > 0$, \quad $\left| \begin{array}{ccc}
+		f_{11} & f_{12} & f_{13} \\
+		f_{21} & f_{22} & f_{23} \\
+		f_{31} & f_{32} & f_{33}
+	\end{array}\right| < 0$, $\dots$
+
+	en el punto $\vx^*(\valph)$. Entonces, el punto $\vx^*(\valph)$ es un máximo local de $f$.
+
+
+\end{frame}
+
+\begin{frame}{Mínimos de una Función}
+	
+	Sea $f: S \rightarrow \R$ una función $C^2$ definida en $S \in \Rn$. Suponga que 
+
+	\[
+		\frac{\partial f}{\partial x_i}(\vx^*)= 0 \quad \text{for } i = 1, 2, \dots, n
+	\]
+
+	y que los $n$ menores principales directores de la matriz hessiana ($Hf(\vx^*)$) son todos positivos,
+
+	$\left| f_{11} \right| > 0$, \quad $\left| \begin{array}{cc}
+		f_{11} & f_{12} \\
+		f_{21} & f_{22}
+	\end{array}\right| > 0$, \quad $\left| \begin{array}{ccc}
+		f_{11} & f_{12} & f_{13} \\
+		f_{21} & f_{22} & f_{23} \\
+		f_{31} & f_{32} & f_{33}
+	\end{array}\right| > 0$, $\dots$
+
+	en el punto $\vx^*(\valph)$. Entonces, el punto $\vx^*(\valph)$ es un mínimo local de $f$.
+
+\end{frame}
+
+\begin{frame}{Función de Valor Máximo (Mínimo)}
+	
+	Al resolver un problema de maximización (minimización) encontramos que el valor óptimo
+	de las variables de decisión van a depender de los parámetros del modelo: $\vx^*(\valph)$. Cuando 
+	reemplazamos estos valores óptimos en la función objetivo encontramos el valor máximo (mínimo) de la función 
+	que denotaremos como $f^*$ y la llamaremos función de valor máximo (mínimo). 
+	\vspace{10pt}
+
+	\begin{varblock}{Función de Valor Máximo (Mínimo)}{fg = vi_magenta}
+	  
+		\[ f^* = \underset{\vx}{\max \, (\min)} \, f(\vx, \valph) \]
+%
+		\[f^* = f(x_1^*(\valph), x_2^*(\valph), \dots, x_n^*(\valph))\]
+	\end{varblock}
+
+\end{frame}
+
+
+\begin{frame}{Teorema de la Envolvente}
+	Sea $f(\vx;\valph)$ un función $C^1$ con $\vx \in \Rn$ y $\valph \in \mathbb{R}^m$. Para cada elección del 
+	vector de parámetros $\valph$, consideremos el problema de maximización sin restricción
+
+	\[ \text{Maximizar } \, f(\vx;\valph) \, \text{ con respecto a } \vx \]
+	
+	Sea $\vx^*(\valph)$ una solución del problema y supongamos que $\vx^*(\valph)$ es una función $C^1$ de $\valph$,
+	entonces:
+
+	\[ \frac{\partial f^*(\valph)}{\partial \alpha_i} = 
+	\left. \frac{\partial f(\vx; \valph)}{\partial \alpha_i} \right]_{\vx = \vx^*(\valph)} \]
+
+
+\end{frame}
+
+
+%%
+% 
+%%
+\setbeamercolor{progress bar}{fg=rb_blue, bg=rb_blue}
+\section{Optimización con restricciones}
+\setbeamercolor{frametitle}{bg=rb_blue}
+
+\begin{frame}{Planteo del Problema de Optimización Restrigida}
+	\[
+		\underset{\vxe}{\max \, (\min)} \quad  f(\vx; \valph) \quad \text{ sujeto a } \left\{ \begin{array}{l} g_1(\vxe; \valphe) = b_1
+		\\ \dots \dots \dots \\ g_r(\vxe; \valphe) = b_r \end{array} \right.
+	\]
+	
+	donde $\vx \in \Rn$, $\valph = \in \mathbb{R}^m$, $b_j \in \R$ con $j = 1, 2, \dots, r$.
+	\vspace{5pt}
+	\begin{enumerate}
+		\item La función $f$ se llama \alertblue{función objetivo} del modelo.
+		\item Las funciones $g_j$ se denominan \alertred{restricciones} del modelo. 
+		\item Las variables $\vxe$ se denominan \alertblue{variables de decisión} del modelo.
+		\item Las variables $\alpha_1, \alpha_2, \dots, \alpha_m; b_1, \dots, b_r$ se denominan \alertred{parámetros} del modelo.
+	\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Función de Lagrange o Lagrangiano}
+	Dos formas alternativas de definir la función de Lagrange:
+
+	\[
+		\mathcal{L} = f(\vx; \valph) - \lambda_1 [g_1(\vx; \valph) - b_1] - \cdots - \lambda_r [g_r(\vx; \valph) - b_r]
+	\]
+	o
+	\[
+		\mathcal{L} = f(\vx; \valph) + \lambda_1 [b_1 - g_1(\vx; \valph)] - \cdots - \lambda_r [b_r - g_r(\vx; \valph)]
+	\]
+
+	donde $\lambda_1, \lambda_2, \dots, \lambda_r$ se llaman \alertblue{multiplicadores de Lagrange}.
+
+\end{frame}
+
+
+\begin{frame}{Condiciones de Primer Orden}
+	Dado el problema de máximización (minimización) con restricciones donde $f(\vx; \valph)$ y $g_j(\vx; \valph)$ con
+	$j = 1, 2, \dots, r$ son funciones en $C^1$. Suponga que $\vx^*(\valph, \mathbf{b})$ pertenece al conjunto restricción
+	y además es un máximo (mínimo) local de $f$ en el conjunto restricción. Entonces existen $\lambda_{1}^{*}, \dots, \lambda_{r}^{*}$
+	tal que $(\vx^*, \pmb{\lambda}^*)$ es un punto crítico de la función de Lagrange. Es decir:
+	
+	\[  \frac{\partial \mathcal{L}}{\partial x_1}(\vx^*, \pmb{\lambda}^*) = 0, \dots, \frac{\partial \mathcal{L}}{\partial x_n}(\vx^*, \pmb{\lambda}^*) = 0\]
+	
+	\[  \frac{\partial \mathcal{L}}{\partial \lambda_1}(\vx^*, \pmb{\lambda}^*) = 0, \dots, \frac{\partial \mathcal{L}}{\partial \lambda_r}(\vx^*, \pmb{\lambda}^*) = 0\]
+\end{frame}
+
+
+\begin{frame}{Condiciones de Segundo Orden}
+	Sean $f(\vx; \valph)$ y $g_j(\vx; \valph)$ con 	$j = 1, 2, \dots, r$ son funciones en $C^2$. Considere el problema de
+	maximización (minimización) de $f$ sujeto a las restricciones $g_j(\vx; \valph) = b_j$ con $j = 1, 2, \dots, r$. Suponga que
+
+	\begin{enumerate}[label=(\alph*)]
+		\item $\vx^* $  cumple con las restricciones,
+		\item existen $\lambda_1^*, \dots, \lambda_r^*$ tal $(\vx*, \pmb{\lambda}^*)$ es punto crítico de $\mathcal{L}$,
+		\item la matriz hessiana de $\mathcal{L}$ es negativa (positiva) definida en el conjunto restricción.
+	\end{enumerate}
+
+	Entonces $\vx^*(\valph, \mathbf{b})$ es un máximo (mínimo) restringido de la función $f$ en el conjunto restricción.
+\end{frame}
+
+
+
+\begin{frame}{Función de Valor Máximo (Mínimo)}
+	
+	Al resolver un problema de maximización (minimización) encontramos que el valor óptimo
+	de las variables de decisión van a depender de los parámetros del modelo: $\vx^*(\valph, \mathbf{b})$. Cuando 
+	reemplazamos estos valores óptimos en la función objetivo encontramos el valor máximo (mínimo) de la función 
+	que denotaremos como $f^*$ y la llamaremos función de valor máximo (mínimo). 
+	\vspace{10pt}
+
+	\begin{varblock}{Función de Valor Máximo (Mínimo)}{fg = vi_magenta}
+	  
+		\[ f^* = \underset{\vx}{\max \, (\min)} \, f(\vx, \valph) \, \text{ sujeto a }  g_j(\vxe; \valphe) = b_j 
+		\text{ con } j = 1, 2, \dots, r. \]
+%
+		\[f^* = f\left[x_1^*(\valph, \mathbf{b}), x_2^*(\valph, \mathbf{b}), \dots, x_n^*(\valph, \mathbf{b})\right]\]
+	\end{varblock}
+
+\end{frame}
+
+
+\begin{frame}{Teorema de la Envolvente}
+	Sean $f(\vx;\valph)$ y $g_j(\vx; \valph) = b_j \text{ con } j= 1, \dots, r$ funciones en $C^1$ 
+	con $\vx \in \Rn$, $\valph \in \mathbb{R}^m$ y $b_j \in \R \text{ con } j= 1, \dots, r$. Para cada elección de 
+    los parámetros $\valph$, $\mathbf{b} = (b_1, b_2, \dots, b_r)$, consideremos el problema de maximización 
+	(minimización) restringido
+	%
+	\[
+		\underset{\vxe}{\max \, (\min)} \quad  f(\vx; \valph) \quad \text{ sujeto a }  g_j(\vxe; \valphe) = b_j 
+		\text{ con } j = 1, 2, \dots, r.
+	\]
+	%
+	Sea $\vx^*(\valph, \mathbf{b})$ una solución del problema y supongamos que $\vx^*(\valph, \mathbf{b})$ es una 
+	función $C^1$ de $\valph$ y $, \mathbf{b}$, entonces:
+	%
+	\[ \frac{\partial f^*(\valph,\mathbf{b})}{\partial \alpha_i} = 
+	\left. \frac{\partial \mathcal{L}(\vx; \valph, \mathbf{b})}{\partial \alpha_i} \right]_{\vx = \vx^*(\valph, \mathbf{b})}
+	\text{ con } i = 1, 2, \dots, m.
+	\]
+	%
+	\[ \frac{\partial f^*(\valph,\mathbf{b})}{\partial b_j} = 
+	\left. \frac{\partial \mathcal{L}(\vx; \valph, \mathbf{b})}{\partial b_j} \right]_{\vx = \vx^*(\valph, \mathbf{b})}
+	= \lambda_{j}^{*}(\valph,\mathbf{b}) \text{ con } j = 1, 2, \dots, r.
+	\]
+
+\end{frame}
+
+
+%------------------------------------------------------
+% Varios
+%------------------------------------------------------
+\setbeamercolor{progress bar}{fg=rb_violet, bg=rb_violet}
+\section{Bibliografía}
+\setbeamercolor{frametitle}{bg=rb_indigo}
+
+\nocite{*}
+\begin{frame}[allowframebreaks]
+\frametitle{Bibliografía}
+    {%\footnotesize
+    \bibliographystyle{chicago}
+    \bibliography{biblio}
+   }
+\end{frame}
+
+
+%% Licencia de uso de la presentación
+\metroset{numbering=none}
+{\setbeamercolor{palette primary}{fg=white, bg=rb_indigo}
+\begin{frame}[standout]
+	This presentation is licensed under a
+	\href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International}.
+	
+	\begin{center}
+		\ccbyncsa
+	\end{center}
+\end{frame}
+}
+
+
+\end{document}

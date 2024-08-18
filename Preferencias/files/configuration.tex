@@ -1,0 +1,96 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Load packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[spanish]{babel}
+\usepackage{pgfpages}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+\usepackage{appendixnumberbeamer}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{datetime2}
+\usepackage{environ}
+\usepackage{amsmath}
+
+
+
+%\renewcommand\pgfsetupphysicalpagesizes {\pdfpagewidth\pgfphysicalwidth\pdfpageheight\pgfphysicalheight}
+%\pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% New Environments and Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\alertblue}[1]{%
+{\setbeamercolor{alerted text}{fg = rb_blue}
+\alert{#1}}
+}
+
+\newcommand{\alertred}[1]{%
+{\setbeamercolor{alerted text}{fg = rb_red}
+\alert{#1}}
+}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\RN}{\mathbb{R}^n}
+\newcommand{\RP}{\mathbb{R}_{+}}
+\newcommand{\RNP}{\mathbb{R}^{n}_{+}}
+
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vxe}{x_1, x_2, \dots, x_n}
+\newcommand{\indi}{i = 1, 2, \dots, n}
+\newcommand{\vsf}{\vspace{5pt}}
+
+
+\newenvironment{varblock}[2]{%
+  \setbeamercolor{block title}{#2}
+  \begin{block}{#1}}{\end{block}}
+
+\NewEnviron{myequation}{%
+  \begin{equation*}
+  \scalebox{1.5}{$\BODY$}
+  \end{equation*}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Color Definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bright Colors
+\definecolor{br_blue}{HTML}{4477AA}
+\definecolor{br_cyan}{HTML}{66CCEE}
+\definecolor{br_green}{HTML}{228833}
+\definecolor{br_yellow}{HTML}{CCBB44}
+\definecolor{br_red}{HTML}{EE6677}
+\definecolor{br_purple}{HTML}{AA3377}
+\definecolor{br_grey}{HTML}{BBBBBB}
+
+% Vibrant Colors
+\definecolor{vi_blue}{HTML}{0077BB}
+\definecolor{vi_cyan}{HTML}{33BBEE}
+\definecolor{vi_teal}{HTML}{009988}
+\definecolor{vi_orange}{HTML}{EE7733}
+\definecolor{vi_red}{HTML}{CC3311}
+\definecolor{vi_magenta}{HTML}{EE3377}
+\definecolor{vi_grey}{HTML}{BBBBBB}
+
+% Rainbow Colors
+\definecolor{rb_red}{HTML}{E81416}
+\definecolor{rb_orange}{HTML}{FFA500}
+\definecolor{rb_yellow}{HTML}{FAEB36}
+\definecolor{rb_green}{HTML}{79C314}
+\definecolor{rb_blue}{HTML}{487DE7}
+\definecolor{rb_indigo}{HTML}{4B369D}
+\definecolor{rb_violet}{HTML}{70369D}
+
+% Other colors
+\definecolor{hi_yellow}{HTML}{DDAA33}
+\definecolor{hi_red}{HTML}{BB5566}
+\definecolor{hi_blue}{HTML}{004488}
+\definecolor{dk_teal}{HTML}{23373B}
+\definecolor{dk_orange}{HTML}{EB811B}
+
+
+% Operadores matematicos
+\DeclareMathOperator{\Hessian}{Hess}
+\DeclareMathOperator*{\maxi}{Maximizar}
+
